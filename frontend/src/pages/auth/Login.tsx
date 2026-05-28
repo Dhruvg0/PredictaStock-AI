@@ -30,7 +30,11 @@ export default function Login() {
       formData.append('username', data.email)
       formData.append('password', data.password)
       
-      const response = await api.post('/auth/token', formData, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+      const baseUrl = apiUrl.endsWith('/api') ? apiUrl.slice(0, -4) : apiUrl
+      
+      // The user explicitly requested to use the full VITE_API_URL path
+      const response = await api.post(`${baseUrl}/api/auth/token`, formData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -45,6 +49,7 @@ export default function Login() {
       setAuth(token, userRes.data)
       navigate('/app/dashboard')
     } catch (err: any) {
+      console.log(err.response?.data)
       setError(err.response?.data?.detail || 'Failed to login. Please try again.')
     }
   }
