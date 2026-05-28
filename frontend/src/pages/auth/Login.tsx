@@ -31,12 +31,11 @@ export default function Login() {
       formData.append('username', data.email)
       formData.append('password', data.password)
       
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-      // If VITE_API_URL already has /api, don't duplicate it
-      const loginUrl = apiUrl.endsWith('/api') ? `${apiUrl}/auth/token` : `${apiUrl}/api/auth/token`
+      const requestUrl = `${import.meta.env.VITE_API_URL || ''}/api/auth/token`
+      console.log('Final Request URL:', requestUrl)
       
       // Use raw axios to prevent any interceptor interference and force form-urlencoded
-      const response = await axios.post(loginUrl, formData.toString(), {
+      const response = await axios.post(requestUrl, formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -44,9 +43,16 @@ export default function Login() {
       
       const token = response.data.access_token
       
-      // Fetch user profile using the configured api client
+      // Fetch user profile using the explicit URL
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
-      const userRes = await api.get('/auth/me')
+      const meUrl = `${import.meta.env.VITE_API_URL || ''}/api/auth/me`
+      console.log('Final Request URL:', meUrl)
+      
+      const userRes = await axios.get(meUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
       
       setAuth(token, userRes.data)
       navigate('/app/dashboard')

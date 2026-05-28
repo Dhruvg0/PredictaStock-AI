@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import api from '@/lib/api'
+import axios from 'axios'
 import { PackageSearch, Loader2, Cpu } from 'lucide-react'
 
 const registerSchema = z.object({
@@ -29,7 +29,10 @@ export default function Register() {
   const onSubmit = async (data: RegisterForm) => {
     try {
       setError('')
-      await api.post('/auth/register', {
+      const requestUrl = `${import.meta.env.VITE_API_URL || ''}/api/auth/register`
+      console.log('Final Request URL:', requestUrl)
+      
+      await axios.post(requestUrl, {
         email: data.email,
         password: data.password,
         full_name: data.full_name
