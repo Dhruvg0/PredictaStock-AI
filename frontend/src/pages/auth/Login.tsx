@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import axios from 'axios'
 import api from '@/lib/api'
 import { useAuthStore } from '@/store/auth'
 import { PackageSearch, Loader2, Cpu } from 'lucide-react'
@@ -31,10 +32,11 @@ export default function Login() {
       formData.append('password', data.password)
       
       const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
-      const baseUrl = apiUrl.endsWith('/api') ? apiUrl.slice(0, -4) : apiUrl
+      // If VITE_API_URL already has /api, don't duplicate it
+      const loginUrl = apiUrl.endsWith('/api') ? `${apiUrl}/auth/token` : `${apiUrl}/api/auth/token`
       
-      // The user explicitly requested to use the full VITE_API_URL path
-      const response = await api.post(`${baseUrl}/api/auth/token`, formData, {
+      // Use raw axios to prevent any interceptor interference and force form-urlencoded
+      const response = await axios.post(loginUrl, formData.toString(), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded'
         }
@@ -42,7 +44,7 @@ export default function Login() {
       
       const token = response.data.access_token
       
-      // Fetch user profile
+      // Fetch user profile using the configured api client
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`
       const userRes = await api.get('/auth/me')
       
