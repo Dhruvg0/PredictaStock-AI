@@ -37,6 +37,7 @@ export default function Register() {
       // Auto-redirect to login with a success message (in a real app, you might use a toast)
       navigate('/login')
     } catch (err: any) {
+      console.log(err.response?.data)
       setError(err.response?.data?.detail || 'Failed to register. Please try again.')
     }
   }
