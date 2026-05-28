@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api import auth, inventory, forecasting, products, alerts
 from app.core.config import settings
 from app.db.session import engine
-from app.db.base import Base
+from app.models import Base
 
 Base.metadata.create_all(bind=engine)
 

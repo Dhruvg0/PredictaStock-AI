@@ -10,24 +10,45 @@ from app.core.config import settings
 
 router = APIRouter()
 
+import traceback
+from sqlalchemy.exc import IntegrityError
+
 @router.post("/register", response_model=UserResponse)
 def register(user_in: UserCreate, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.email == user_in.email).first()
-    if user:
+    try:
+        user = db.query(User).filter(User.email == user_in.email).first()
+        if user:
+            raise HTTPException(
+                status_code=400,
+                detail="The user with this email already exists in the system.",
+            )
+        user = User(
+            email=user_in.email,
+            hashed_password=get_password_hash(user_in.password),
+            full_name=user_in.full_name,
+            is_superuser=False,
+        )
+        db.add(user)
+        db.commit()
+        db.refresh(user)
+        return user
+    except HTTPException:
+        raise
+    except IntegrityError as e:
+        db.rollback()
+        print(f"Database IntegrityError during registration: {e}")
         raise HTTPException(
             status_code=400,
             detail="The user with this email already exists in the system.",
         )
-    user = User(
-        email=user_in.email,
-        hashed_password=get_password_hash(user_in.password),
-        full_name=user_in.full_name,
-        is_superuser=False,
-    )
-    db.add(user)
-    db.commit()
-    db.refresh(user)
-    return user
+    except Exception as e:
+        db.rollback()
+        print(f"Unexpected error during registration: {e}")
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail="Internal Server Error during registration"
+        )
 
 @router.post("/token", response_model=Token)
 def login_access_token(db: Session = Depends(get_db), form_data: OAuth2PasswordRequestForm = Depends()):
