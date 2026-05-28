@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
-import { PackageSearch, ArrowRight, ShieldCheck, Cpu, Zap, LineChart, Globe, Layers, DollarSign, CheckCircle2, ChevronRight, Server, Database, Network, Brain } from 'lucide-react'
+import { PackageSearch, ArrowRight, ShieldCheck, Cpu, Zap, LineChart, Globe, ChevronRight, Server, Database, Network, Brain } from 'lucide-react'
 
 export default function Landing() {
   return (

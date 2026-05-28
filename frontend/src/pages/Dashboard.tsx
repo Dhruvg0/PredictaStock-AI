@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
-import { Activity, Package, AlertTriangle, TrendingUp, Loader2, UploadCloud, X, Crosshair, Zap, BarChart3 } from 'lucide-react'
+import { Activity, Package, AlertTriangle, Loader2, UploadCloud, X, Crosshair, Zap, BarChart3 } from 'lucide-react'
 import api from '@/lib/api'
 
 // We will fetch real inventory data to calculate stats

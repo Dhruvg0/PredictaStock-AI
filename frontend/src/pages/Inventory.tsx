@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { motion } from 'framer-motion'
-import { Search, Filter, AlertCircle, CheckCircle2, Loader2, ArrowRight, UploadCloud, Plus, X, Server, Database, Eye, Trash2 } from 'lucide-react'
+import { Search, Filter, AlertCircle, CheckCircle2, Loader2, Plus, X, Server, Database, Eye, Trash2 } from 'lucide-react'
 import api from '@/lib/api'
 import { Link } from 'react-router-dom'
 import { useForm } from 'react-hook-form'

@@ -1,7 +1,7 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, List, TrendingUp, Bell, Settings, PackageSearch, LogOut, Search, Command } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function AppLayout() {
   const location = useLocation()

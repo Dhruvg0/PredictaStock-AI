@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams, Link } from 'react-router-dom'
-import { Brain, TrendingUp, AlertTriangle, Loader2, ArrowLeft, Target, Zap } from 'lucide-react'
+import { Brain, TrendingUp, Loader2, ArrowLeft, Target, Zap } from 'lucide-react'
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import api from '@/lib/api'
 
